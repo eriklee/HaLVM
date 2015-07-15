@@ -102,9 +102,7 @@ startServer print xs macstr state =
      print ("Starting server on device "++macstr++"\n")
      addDevice ns mac (xenSend nic) (xenReceiveLoop nic)
      deviceUp ns mac
-     ipMV <- newEmptyMVar
-     dhcpDiscover ns mac (putMVar ipMV)
-     ipaddr <- takeMVar ipMV
+     ipaddr <- dhcpDiscover ns mac
      print ("Device "++macstr++" has IP "++show ipaddr++"\n")
      lsock <- listen ns undefined 80 `catch` handler
      forever $ do
